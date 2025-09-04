@@ -1,0 +1,5 @@
+CREATE TABLE system_config (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    config VARCHAR(191) NOT NULL UNIQUE,
+    config_value LONGTEXT
+);

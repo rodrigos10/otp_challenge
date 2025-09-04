@@ -1,0 +1,43 @@
+version: '3.1'
+
+networks:
+  otp_challenge:
+    driver: bridge
+
+volumes:
+  maven-cache:
+    driver: local
+  vscode-extensions:
+    driver: local
+  
+services:
+  db:
+      image: mysql:8.0
+      container_name: otp-challenge-db
+      restart: always
+      networks:
+        - otp_challenge
+      env_file:
+        - ../.env
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./data/db:/var/lib/mysql
+
+  backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: otp-challenge-backend
+    image: rodrigoo509/otp-challenge-api:latest
+    networks:
+      - otp_challenge
+    ports:
+      - "8080:8080"
+    env_file:
+      - ../.env
+    volumes:
+      - ../:/workspace
+      - maven-cache:/root/.m2
+      - vscode-extensions:/root/.vscode-server
+    command: ["sh", "-c", "trap 'docker-compose stop' EXIT; while :; do sleep 1; done"]
