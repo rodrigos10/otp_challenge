@@ -1,0 +1,28 @@
+^C:\WORKSPACE\OTP_CHALLENGE\OTP_GENERATOR\BUILD\WINDOWS\X64\CMAKEFILES\566AEA7FCD0374E470DCA893090548B7\FLUTTER_WINDOWS.DLL.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\Users\rodri\tools\flutter PROJECT_DIR=C:\workspace\otp_challenge\otp_generator FLUTTER_ROOT=C:\Users\rodri\tools\flutter FLUTTER_EPHEMERAL_DIR=C:\workspace\otp_challenge\otp_generator\windows\flutter\ephemeral PROJECT_DIR=C:\workspace\otp_challenge\otp_generator FLUTTER_TARGET=C:\workspace\otp_challenge\otp_generator\lib\main.dart DART_DEFINES=RkxVVFRFUl9WRVJTSU9OPTMuMzUuMg==,RkxVVFRFUl9DSEFOTkVMPXN0YWJsZQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049MDVkYjk2ODkwOA==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049YThiZmRmYzM5NA==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My45LjA= DART_OBFUSCATION=false TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=C:\workspace\otp_challenge\otp_generator\.dart_tool\package_config.json C:/Users/rodri/tools/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\WORKSPACE\OTP_CHALLENGE\OTP_GENERATOR\BUILD\WINDOWS\X64\CMAKEFILES\4EEA185F6F9D8ED2AF31D2BEEF758D00\FLUTTER_ASSEMBLE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\WORKSPACE\OTP_CHALLENGE\OTP_GENERATOR\WINDOWS\FLUTTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/workspace/otp_challenge/otp_generator/windows -BC:/workspace/otp_challenge/otp_generator/build/windows/x64 --check-stamp-file C:/workspace/otp_challenge/otp_generator/build/windows/x64/flutter/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
