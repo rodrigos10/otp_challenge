@@ -29,7 +29,7 @@ public class OtpEntity {
     private String token;
 
     @Column(name = "user_id")
-    private String useId;
+    private String userId;
 
     @Column(name = "expires_at")
     private Instant expiresAt;

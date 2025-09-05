@@ -1,6 +1,7 @@
 package br.com.challenge.otp.api.controller;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.challenge.otp.api.model.OtpResponse;
 import br.com.challenge.otp.api.model.TokenValidationResult;
 import br.com.challenge.otp.domain.model.ConfigEntity;
 import br.com.challenge.otp.domain.model.OtpEntity;
@@ -32,7 +34,7 @@ public class OtpController {
     private ConfigRepository configRepository;
 
     @PostMapping("/{user_id}")
-    public ResponseEntity<OtpEntity> criarOtp(@PathVariable("user_id") String userId) {
+    public ResponseEntity<OtpResponse> criarOtp(@PathVariable("user_id") String userId) {
 
         if (!userRepository.existsById(userId)) {
             return ResponseEntity.notFound().build();
@@ -47,15 +49,28 @@ public class OtpController {
 
         OtpEntity otp = OtpEntity.builder()
                 .token(token)
-                .useId(userId)
+                .userId(userId)
                 .expiresAt(Instant.now().plusSeconds(Long.parseLong(config.getValue())))
                 .createdAt(Instant.now())
                 .valid(true)
                 .build();
 
+        List<OtpEntity> userOtps = repository.findByUserId(userId);
+        for (OtpEntity otpEntity : userOtps) {
+            otpEntity.setValid(false);
+        }
+        repository.saveAllAndFlush(userOtps);
         repository.saveAndFlush(otp);
 
-        return ResponseEntity.ok(otp);
+        return ResponseEntity.ok(OtpResponse.builder()
+                .id(otp.getId())
+                .token(otp.getToken())
+                .duration(config.getValue())
+                .userId(otp.getUserId())
+                .expiresAt(otp.getExpiresAt())
+                .createdAt(otp.getCreatedAt())
+                .valid(otp.getValid())
+                .build());
     }
 
     // validação
@@ -64,7 +79,7 @@ public class OtpController {
             @RequestParam("userId") String userId) {
 
         OtpEntity otp = repository
-                .findByTokenAndUseId(token, userId)
+                .findByTokenAndUserId(token, userId)
                 .orElseThrow(() -> new RuntimeException("Token inválido ou usuário não encontrado"));
 
         boolean tokenInvalido = !otp.getValid();

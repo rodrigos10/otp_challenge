@@ -1,6 +1,7 @@
 package br.com.challenge.otp.api.controller;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.challenge.otp.api.model.LoginInput;
+import br.com.challenge.otp.api.model.LoginResponse;
 import br.com.challenge.otp.api.model.UserInput;
-import br.com.challenge.otp.domain.model.OtpEntity;
 import br.com.challenge.otp.domain.model.UserEntity;
 import br.com.challenge.otp.domain.repository.UserRepository;
 
@@ -37,19 +38,26 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginInput dados) {
-        //verificar email do usuario informado no banco de dados
-         UserEntity user = repository
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginInput dados) {
+        // verificar email do usuario informado no banco de dados
+        UserEntity user = repository
                 .findByEmail(dados.getEmail())
-                .orElseThrow(() -> new RuntimeException("Dados inválidos"));
-                
-        //verificar se a senha coincide
+                .orElse(null);
+
+        if (Optional.ofNullable(user).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // verificar se a senha coincide
         boolean senhaValida = dados.getPassword().equals(user.getPassword());
 
-        if(!senhaValida) {
+        if (!senhaValida) {
             return ResponseEntity.badRequest().build();
         }
-        
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(LoginResponse.builder()
+                .userId(user.getId())
+                .userName(user.getUserName())
+                .build());
     }
 }
